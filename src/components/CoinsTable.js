@@ -57,9 +57,8 @@ export default function CoinsTable() {
   const [coins, setCoins] = useState([]);
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState('');
-  const [page, setPage] = useState(1);
 
-  const { currency, symbol } = CryptoState();
+  const { currency, symbol, page, setPage } = CryptoState();
 
   const classes = useStyles();
   const navigate = useNavigate();
@@ -180,11 +179,7 @@ export default function CoinsTable() {
                           {row.price_change_percentage_24h.toFixed(2)}%
                         </TableCell>
                         <TableCell align="right">
-                          {symbol}{' '}
-                          {numberWithCommas(
-                            row.market_cap.toString().slice(0, -6)
-                          )}
-                          M
+                          {symbol} {numberWithCommas(row.market_cap.toString())}
                         </TableCell>
                       </TableRow>
                     );
@@ -204,7 +199,7 @@ export default function CoinsTable() {
             justifyContent: 'center',
           }}
           classes={{ ul: classes.pagination }}
-          onChange={(_, value) => {
+          onChange={(event, value) => {
             setPage(value);
             window.scroll(0, 450);
           }}

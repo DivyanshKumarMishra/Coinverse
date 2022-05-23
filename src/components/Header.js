@@ -4,10 +4,10 @@ import {
   Toolbar,
   Typography,
   Container,
-  TextField,
   MenuItem,
   createTheme,
   ThemeProvider,
+  Select,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core';
 import { useNavigate } from 'react-router-dom';
@@ -43,26 +43,27 @@ export default function Header() {
         <Container>
           <Toolbar>
             <Typography
-              variant="h6"
-              onClick={() => navigate('/')}
+              variant="h4"
+              onClick={() => {
+                navigate('/');
+              }}
               className={classes.title}
             >
               Coinverse
             </Typography>
-            <TextField
-              value={currency}
+            <Select
+              variant="outlined"
+              labelId="demo-simple-select-label"
               id="demo-simple-select"
+              value={currency}
+              style={{ width: 100, height: 40, marginLeft: 15 }}
               onChange={(e) => {
                 setCurrency(e.target.value);
               }}
-              select
-              variant="outlined"
-              style={{ width: 100, marginLeft: 15 }}
-              size="small"
             >
-              <MenuItem value="USD">USD</MenuItem>
-              <MenuItem value="INR">INR</MenuItem>
-            </TextField>
+              <MenuItem value={'USD'}>USD</MenuItem>
+              <MenuItem value={'INR'}>INR</MenuItem>
+            </Select>
           </Toolbar>
         </Container>
       </AppBar>
