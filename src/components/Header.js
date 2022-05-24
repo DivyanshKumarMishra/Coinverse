@@ -9,9 +9,30 @@ import {
   ThemeProvider,
   Select,
 } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core';
-import { useNavigate } from 'react-router-dom';
+import { makeStyles, withStyles } from '@material-ui/core';
+import { Link, useNavigate } from 'react-router-dom';
 import { CryptoState } from '../CryptoContext';
+import InputBase from '@material-ui/core/InputBase';
+import { supported_currencies } from '../config/currencies';
+
+const BootstrapInput = withStyles((theme) => ({
+  root: {
+    'label + &': {
+      marginTop: theme.spacing(3),
+    },
+  },
+  input: {
+    borderRadius: 4,
+    position: 'relative',
+    border: '1px solid white',
+    fontSize: 16,
+    padding: '10px 26px 10px 12px',
+    '&:hover': {
+      borderRadius: 4,
+      border: '3px solid white',
+    },
+  },
+}))(InputBase);
 
 const useStyles = makeStyles(() => ({
   title: {
@@ -21,6 +42,7 @@ const useStyles = makeStyles(() => ({
     fontWeight: 'bold',
     cursor: 'pointer',
   },
+  button: {},
 }));
 
 const darkTheme = createTheme({
@@ -42,6 +64,13 @@ export default function Header() {
       <AppBar color="transparent" position="static">
         <Container>
           <Toolbar>
+            <Link to="/">
+              <img
+                src="icon-logo.png"
+                alt="coin"
+                style={{ height: '40px', marginRight: '5px' }}
+              />
+            </Link>
             <Typography
               variant="h4"
               onClick={() => {
@@ -52,17 +81,16 @@ export default function Header() {
               Coinverse
             </Typography>
             <Select
-              variant="outlined"
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
               value={currency}
               style={{ width: 100, height: 40, marginLeft: 15 }}
               onChange={(e) => {
                 setCurrency(e.target.value);
               }}
+              input={<BootstrapInput />}
             >
-              <MenuItem value={'USD'}>USD</MenuItem>
-              <MenuItem value={'INR'}>INR</MenuItem>
+              {supported_currencies.map((currency) => (
+                <MenuItem value={currency}>{currency}</MenuItem>
+              ))}
             </Select>
           </Toolbar>
         </Container>

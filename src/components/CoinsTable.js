@@ -15,6 +15,7 @@ import {
   TableContainer,
   Table,
   Paper,
+  useMediaQuery,
 } from '@material-ui/core';
 import axios from 'axios';
 import { CoinList } from '../config/api';
@@ -57,6 +58,7 @@ export default function CoinsTable() {
   const [coins, setCoins] = useState([]);
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState('');
+  const mobile = useMediaQuery('(max-width: 530px)');
 
   const { currency, symbol, page, setPage } = CryptoState();
 
@@ -69,8 +71,6 @@ export default function CoinsTable() {
     setCoins(data);
     setLoading(false);
   };
-
-  console.log(coins);
 
   useEffect(() => {
     fetchCoins();
@@ -198,6 +198,7 @@ export default function CoinsTable() {
             display: 'flex',
             justifyContent: 'center',
           }}
+          size={mobile ? 'small' : 'large'}
           classes={{ ul: classes.pagination }}
           onChange={(event, value) => {
             setPage(value);
