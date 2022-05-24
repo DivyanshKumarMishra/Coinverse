@@ -51,7 +51,7 @@ export default function Banner() {
               fontFamily: 'Montserrat',
             }}
           >
-            Get all the Info regarding your favorite Crypto Currency
+            Trending Crypto Currency in the market
           </Typography>
         </div>
         <Carousel />

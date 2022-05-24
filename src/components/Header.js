@@ -24,7 +24,7 @@ const BootstrapInput = withStyles((theme) => ({
   input: {
     borderRadius: 4,
     position: 'relative',
-    border: '1px solid white',
+    border: '1px solid gray',
     fontSize: 16,
     padding: '10px 26px 10px 12px',
     '&:hover': {
