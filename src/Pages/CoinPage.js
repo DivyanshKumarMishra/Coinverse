@@ -3,6 +3,7 @@ import {
   makeStyles,
   Typography,
   Grid,
+  Button,
 } from '@material-ui/core';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
@@ -12,6 +13,8 @@ import CoinChart from '../components/CoinChart';
 import { SingleCoin } from '../config/api';
 import { numberWithCommas } from '../components/CoinsTable';
 import { CryptoState } from '../CryptoContext';
+import { doc, setDoc } from 'firebase/firestore';
+import { db } from '../firebase';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -73,12 +76,60 @@ export default function CoinPage() {
   const [coin, setCoin] = useState();
   const classes = useStyles();
 
-  const { currency, symbol } = CryptoState();
+  const { currency, symbol, user, setAlert, watchlist } = CryptoState();
 
   const fetchCoin = async () => {
     const { data } = await axios.get(SingleCoin(id));
 
     setCoin(data);
+  };
+
+  const inWatchlist = watchlist.includes(coin?.id);
+
+  const addToWatchlist = async () => {
+    const coinRef = doc(db, 'watchlist', user.uid);
+    try {
+      await setDoc(
+        coinRef,
+        { coins: watchlist ? [...watchlist, coin?.id] : [coin?.id] },
+        { merge: true }
+      );
+
+      setAlert({
+        open: true,
+        message: `${coin.name} Added to the Watchlist !`,
+        type: 'success',
+      });
+    } catch (error) {
+      setAlert({
+        open: true,
+        message: error.message,
+        type: 'error',
+      });
+    }
+  };
+
+  const removeFromWatchlist = async () => {
+    const coinRef = doc(db, 'watchlist', user.uid);
+    try {
+      await setDoc(
+        coinRef,
+        { coins: watchlist.filter((wish) => wish !== coin?.id) },
+        { merge: true }
+      );
+
+      setAlert({
+        open: true,
+        message: `${coin.name} Removed from the Watchlist !`,
+        type: 'success',
+      });
+    } catch (error) {
+      setAlert({
+        open: true,
+        message: error.message,
+        type: 'error',
+      });
+    }
   };
 
   console.log(coin);
@@ -159,6 +210,20 @@ export default function CoinPage() {
               )}
             </Typography>
           </span>
+          {user && (
+            <Button
+              variant="outlined"
+              style={{
+                width: '100%',
+                height: 40,
+                backgroundColor: inWatchlist ? '#c20a10' : '#07a321',
+                fontWeight: 'bold',
+              }}
+              onClick={inWatchlist ? removeFromWatchlist : addToWatchlist}
+            >
+              {inWatchlist ? 'Remove from Watchlist' : 'Add to Watchlist'}
+            </Button>
+          )}
         </div>
       </Grid>
       <Grid item className={classes.coinChart} sm={12} md={7} lg={8}>

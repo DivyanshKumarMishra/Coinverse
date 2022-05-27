@@ -26,7 +26,7 @@ export default function SelectButton({ children, selected, onClick }) {
     <span
       style={{
         backgroundColor: selected ? '#c20a10' : '',
-        color: selected ? 'black' : '',
+        color: selected ? 'black' : '#c20a10',
         fontWeight: selected ? 700 : 500,
         fontSize: '22px',
         textAlign: 'center',

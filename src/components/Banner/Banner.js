@@ -51,7 +51,7 @@ export default function Banner() {
               fontFamily: 'Montserrat',
             }}
           >
-            Trending Crypto Currency in the market
+            Top 10 trending Crypto Currencies in the market
           </Typography>
         </div>
         <Carousel />

@@ -14,6 +14,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { CryptoState } from '../CryptoContext';
 import InputBase from '@material-ui/core/InputBase';
 import { supported_currencies } from '../config/currencies';
+import AuthModal from './Authentication/AuthModal';
+import UserSidebar from './Authentication/UserSidebar';
 
 const BootstrapInput = withStyles((theme) => ({
   root: {
@@ -57,7 +59,7 @@ const darkTheme = createTheme({
 export default function Header() {
   const classes = useStyles();
   const navigate = useNavigate();
-  const { currency, setCurrency } = CryptoState();
+  const { currency, setCurrency, user } = CryptoState();
 
   return (
     <ThemeProvider theme={darkTheme}>
@@ -92,6 +94,7 @@ export default function Header() {
                 <MenuItem value={currency}>{currency}</MenuItem>
               ))}
             </Select>
+            {user ? <UserSidebar /> : <AuthModal />}
           </Toolbar>
         </Container>
       </AppBar>

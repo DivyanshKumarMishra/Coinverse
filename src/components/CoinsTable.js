@@ -17,8 +17,6 @@ import {
   Paper,
   useMediaQuery,
 } from '@material-ui/core';
-import axios from 'axios';
-import { CoinList } from '../config/api';
 import { useNavigate } from 'react-router-dom';
 import { CryptoState } from '../CryptoContext';
 
@@ -55,22 +53,14 @@ const useStyles = makeStyles({
 });
 
 export default function CoinsTable() {
-  const [coins, setCoins] = useState([]);
-  const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState('');
   const mobile = useMediaQuery('(max-width: 530px)');
 
-  const { currency, symbol, page, setPage } = CryptoState();
+  const { currency, symbol, page, setPage, coins, loading, fetchCoins } =
+    CryptoState();
 
   const classes = useStyles();
   const navigate = useNavigate();
-
-  const fetchCoins = async () => {
-    setLoading(true);
-    const { data } = await axios.get(CoinList(currency));
-    setCoins(data);
-    setLoading(false);
-  };
 
   useEffect(() => {
     fetchCoins();
